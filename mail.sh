@@ -6,7 +6,7 @@ rm -f $file.*
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/R=lookuphost//g;s/ /\n/g' > ${file}.maillist
 # cat ${file}.maillist
 # tekil domainleri alma
-cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |sort -n |uniq |grep "." > ${file}.domain
+cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce$(hostname)" |sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |sort -n |uniq |grep "." > ${file}.domain
 # cat ${file}.domain
 while read domain
 do
