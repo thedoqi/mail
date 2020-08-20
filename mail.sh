@@ -25,7 +25,7 @@ cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '
 > /root/nedir.txt
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/nedir.txt
 cp /root/${file}.nedir ${file}.out
-sed -i ("s;@; ;") /root/nedir.txt
+sed -i "s;@; ;" /root/nedir.txt
 awk '{print $2}' /root/nedir.txt > ${file}.awk
 while IFS= read -r line
         do
