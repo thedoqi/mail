@@ -8,7 +8,7 @@ rm -f $file.*
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/R=lookuphost//g;s/ /\n/g' > ${file}.maillist
 # cat ${file}.maillist
 # tekil domainleri alma
-cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce$(hostname)" |sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |sort -n |uniq |grep "." > ${file}.domain
+cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce$(hostname)" |sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |sort -n |uniq |grep "." > /root/tekil.txt
 # cat ${file}.domain
 while read domain
 do
@@ -18,7 +18,7 @@ ara="grep $domain /etc/localdomains |wc -l"
                 echo $domain >> $file.bizdecalisan
         fi
 	cat ${file}.maillist |grep $domain >> ${file}.sira
-done < ${file}.domain
+done < /root/tekil.txt
 # cat ${file}.sira
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > ${file}.nedir
