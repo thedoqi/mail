@@ -6,12 +6,9 @@ rm -f $file.*
 # mailleri listeleme
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/ R=dkim_lookuphost//g;s/ R=lookuphost//g;s/ /\n/g' > ${file}.maillist
 # cat ${file}.maillist
-
 # tekil domainleri alma
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/ R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |s$
 # cat ${file}.domain
-
-
 while read domain
 do
 ara="grep $domain /etc/localdomains |wc -l"
@@ -21,9 +18,7 @@ ara="grep $domain /etc/localdomains |wc -l"
         fi
 	cat ${file}.maillist |grep $domain >> ${file}.sira
 done < $file.domain
-
 # cat ${file}.sira
-
 cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
 cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/${file}.nedir
 cp /root/${file}.nedir /root/${file}.out
@@ -37,5 +32,4 @@ awk '{print $2}' /root/${file}.oldu > /root/${file}.awk2
 paste -d'\n' /root/${file}.awk2 /root/${file}.out| while read f1 && read f2; do
 echo "/usr/local/cpanel/bin/uapi --user="$f1" Email suspend_outgoing email="$f2""
 done
-
 exit
