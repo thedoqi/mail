@@ -32,5 +32,4 @@ done < /root/${file}.awk
 awk '{print $2}' /root/${file}.oldu > /root/${file}.awk2
 paste -d'\n' /root/${file}.awk2 /root/${file}.out| while read f1 && read f2; do
 echo "/usr/local/cpanel/bin/uapi --user="$f1" Email suspend_outgoing email="$f2""
-done
 exit
