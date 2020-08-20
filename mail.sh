@@ -3,7 +3,6 @@
 hostname=`hostname`
 echo -e "# file: $file \n# hostname: $hostname \n\n"
 rm -f $file.*
-
 # mailleri listeleme
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/ R=dkim_lookuphost//g;s/ R=lookuphost//g;s/ /\n/g' > ${file}.maillist
 # cat ${file}.maillist
