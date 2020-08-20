@@ -23,7 +23,7 @@ done < /root/tekil.txt
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > ${file}.nedir
 cp /root/${file}.nedir ${file}.out
-sed -i "s;@; ;" ${file}.nedir
+sed -i ("s;@; ;") ${file}.nedir
 awk '{print $2}' ${file}.nedir > ${file}.awk
 while IFS= read -r line
         do
