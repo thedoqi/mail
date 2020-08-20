@@ -30,6 +30,6 @@ while IFS= read -r line
           	cat /etc/trueuserdomains |grep $line >> ${file}.oldu
 done < ${file}.awk
 awk '{print $2}' /root/${file}.oldu > /root/${file}.awk2
-paste -d'\n' /root/${file}.awk2 /root/${file}.out| while read f1 && read f2; do
+paste -d'\n' ${file}.awk2 ${file}.out| while read f1 && read f2; do
 echo "/usr/local/cpanel/bin/uapi --user="$f1" Email suspend_outgoing email="$f2""
 exit
