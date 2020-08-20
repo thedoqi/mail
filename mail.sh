@@ -22,11 +22,9 @@ done < /root/tekil.txt
 # cat ${file}.sira
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
 cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > ${file}.nedir
-> /root/nedir.txt
-cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/nedir.txt
 cp /root/${file}.nedir ${file}.out
-sed -i "s;@; ;" /root/nedir.txt
-awk '{print $2}' /root/nedir.txt > ${file}.awk
+cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' |sed 's/@/ /g' > ${file}.nedir
+awk '{print $2}' ${file}.nedir > ${file}.awk
 while IFS= read -r line
         do
           	cat /etc/trueuserdomains |grep $line >> ${file}.oldu
