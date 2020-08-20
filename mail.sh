@@ -1,12 +1,8 @@
 #!/bin/bash
 
-workdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-file="$workdir/$0"
-
 hostname=`hostname`
-
 echo -e "# file: $file \n# hostname: $hostname \n\n"
-rm $file.*
+rm -f $file.*
 
 # mailleri listeleme
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/ R=dkim_lookuphost//g;s/ R=lookuphost//g;s/ /\n/g' > ${file}.maillist
@@ -19,7 +15,7 @@ cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outs
 
 while read domain
 do
-ara=`grep $domain /etc/localdomains |wc -l`
+ara="grep $domain /etc/localdomains |wc -l"
         if [ $ara == 1 ]; then
                 echo "# $domain bizde calisiyor"
                 echo $domain >> $file.bizdecalisan
