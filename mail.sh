@@ -9,6 +9,8 @@ cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outs
 # tekil domainleri alma
 cat /var/log/exim_mainlog |grep -E "$(date +"%d %H":)" |grep '=>' |grep -E "outsmtp|queued" |awk '{print $5,$6}' |grep -vE "google|gmail|bounce|${hostname}" | sed 's/<//g;s/>//g;s/(//g;s/)//g;s/,//g;s/R=dkim_lookuphost//g;s/ /\n/g' | sed 's/@/ /g' |awk {'print $2'} |sort -n |uniq |grep "." > ${file}.domain
 # cat ${file}.domain
+
+
 while read domain
 do
 ara="grep $domain /etc/localdomains |wc -l"
@@ -17,13 +19,16 @@ ara="grep $domain /etc/localdomains |wc -l"
                 echo $domain >> $file.bizdecalisan
         fi
 	cat ${file}.maillist |grep $domain >> ${file}.sira
-done < $file.domain
+done < ${file}.domain
+
 # cat ${file}.sira
 cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
 cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/${file}.nedir
 cp /root/${file}.nedir /root/${file}.out
 sed -i "s;@; ;" /root/${file}.nedir
 awk '{print $2}' /root/${file}.nedir > /root/${file}.awk
+
+
 while IFS= read -r line
         do
           	cat /etc/trueuserdomains |grep $line >> /root/${file}.oldu
