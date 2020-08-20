@@ -1,6 +1,6 @@
 #!/bin/bash
 workdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-file="$workdir/$0
+file="$workdir/$0"
 hostname='hostname'
 echo -e "# file: $file \n# hostname: $hostname \n\n"
 rm -f $file.*
@@ -31,6 +31,6 @@ while IFS= read -r line
 done < ${file}.awk
 awk '{print $2}' ${file}.oldu > ${file}.awk2
 paste -d'\n' ${file}.awk2 ${file}.out| while read f1 && read f2; do
-echo "/usr/local/cpanel/bin/uapi --user="$f1" Email suspend_outgoing email="$f2"
+echo "/usr/local/cpanel/bin/uapi --user="$f1" Email suspend_outgoing email="$f2""
 done
 exit
