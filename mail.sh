@@ -20,8 +20,8 @@ ara="grep $domain /etc/localdomains |wc -l"
 	cat ${file}.maillist |grep $domain >> ${file}.sira
 done < ${file}.domain
 # cat ${file}.sira
-cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
-cat /root/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/${file}.nedir
+cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit' >> /usr/local/apache/htdocs/engelli.txt
+cat /root/mail/${file}.sira | sort | uniq -c | sort -n | awk -v limit="$thold" '$1 > limit{print $2}' > /root/${file}.nedir
 cp /root/${file}.nedir /root/${file}.out
 sed -i "s;@; ;" /root/${file}.nedir
 awk '{print $2}' /root/${file}.nedir > /root/${file}.awk
