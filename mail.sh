@@ -1,4 +1,6 @@
 #!/bin/bash
+workdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+file="$workdir/$0"
 hostname=`hostname`
 echo -e "# file: $file \n# hostname: $hostname \n\n"
 rm -f $file.*
